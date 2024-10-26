@@ -103,8 +103,9 @@ const Form3 = ({
                 : "h-0 border-transparent"
             }`}
           >
-            {effects.map((effect) => (
+            {effects.map((effect, index) => (
               <div
+              key={index}
                 className="h-[41.6px] text-white px-4 hover:bg-gray-400 flex items-center cursor-pointer"
                 onClick={() => {
                   setOpen(false);
