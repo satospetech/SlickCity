@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   const path = usePathname();
   const router = useRouter();
-  console.log(path);
+
   return (
     <html lang="en">
       <body className={`${roob.variable}  antialiased`}>
