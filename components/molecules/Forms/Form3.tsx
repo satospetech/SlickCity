@@ -20,7 +20,7 @@ const Form3 = ({
 }) => {
   const [text, setText] = useState("");
   const [title, setTitle] = useState(false);
-  const [imageUrl, setImageUrl] = useState<any[]>([]);
+  const [imageUrl, setImageUrl] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   useEffect(() => {
     const urls = images.map((image) => URL.createObjectURL(image.file));

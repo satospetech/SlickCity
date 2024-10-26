@@ -7,9 +7,19 @@ import { MailIcon, PhoneIcon } from "lucide-react";
 import { saveAs } from "file-saver";
 import { Loader } from "lucide-react";
 
+interface Post {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  _id: string;
+  images: string[];
+  effect: string;
+}
+
 const Page = () => {
   const [open, setOpen] = useState(false);
-  const [posts, setPosts] = useState<any>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [videos, setVideos] = useState<File[]>([]);
@@ -42,8 +52,8 @@ const Page = () => {
       await Promise.all(remoteZips);
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, user);
-    } catch (err: any) {
-      console.log(err.message);
+    } catch (err) {
+     
     } finally {
       setDownloading(false);
     }
@@ -99,7 +109,7 @@ const Page = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {posts.map((post: any, index: number) => (
+                {posts.map((post: Post, index: number) => (
                   <div className="border rounded-2xl p-3" key={index}>
                     <h2 className="text-xl xl:text-2xl font-medium mb-2">
                       {post.firstName} {post.lastName}

@@ -3,8 +3,6 @@ import ImageUpload from "@/schema/imageSchema/imageSchema";
 import {
   S3Client,
   PutObjectCommand,
-  DeleteObjectCommand,
-  PutObjectCommandInput,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import AWS from "aws-sdk";
