@@ -68,7 +68,7 @@ const Form3 = ({
           transition={{ ease: "easeLinear", duration: 1 }}
           className="text-xl xl:text-3xl font-semibold text-center mb-4 xl:mb-6 text-white"
         >
-          Share some photos and pick the effect you'd like
+          Share some photos and pick the effect you&apos;d like
         </motion.h1>
       )}
       {title && (

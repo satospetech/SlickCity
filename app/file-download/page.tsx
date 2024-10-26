@@ -32,6 +32,7 @@ const Page = () => {
         const images = await axios.get("/api/image/fetch");
         setPosts(images.data.data);
       } catch (err) {
+        console.log(err);
       } finally {
         setLoading(false);
       }
@@ -53,7 +54,7 @@ const Page = () => {
       const content = await zip.generateAsync({ type: "blob" });
       saveAs(content, user);
     } catch (err) {
-     
+      console.log(err);
     } finally {
       setDownloading(false);
     }
@@ -71,6 +72,7 @@ const Page = () => {
       const res = await axios.post("/api/image/sendToUser", formData);
       console.log(res);
     } catch (err) {
+      console.log(err);
     } finally {
       setSending(false);
     }

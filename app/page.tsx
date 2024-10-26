@@ -54,14 +54,15 @@ const Home = () => {
       formData.append("email", data.email);
       formData.append("phoneNumber", data.phoneNumber);
       formData.append("effect", data.effect);
-      images.forEach((image, index) => {
+      images.forEach((image) => {
         formData.append(`image`, image.file);
         formData.append("type", image.type);
       });
       setLoading(true);
       try {
-        const upload = await axios.post("/api/image/upload", formData);
+        await axios.post("/api/image/upload", formData);
       } catch (err) {
+        console.log(err)
       } finally {
         setLoading(false);
         setForm(4);
@@ -125,8 +126,8 @@ const Home = () => {
             transition={{ ease: "easeInOut", duration: 1 }}
             className="text-xl xl:text-3xl font-semibold text-center mb-4 xl:mb-6 text-white px-4 max-w-lg"
           >
-            We'll send you a video in a couple of minutes. You can send more
-            pictures and we'll make more videos
+            We&apos;ll send you a video in a couple of minutes. You can send more
+            pictures and we&apos;ll make more videos
           </motion.h1>
         </motion.div>
       )}

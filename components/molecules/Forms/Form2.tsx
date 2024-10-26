@@ -50,7 +50,7 @@ const Form2 = ({
           transition={{ ease: "easeInOut", duration: 3 }}
              className="text-xl xl:text-3xl font-semibold text-center mb-4 xl:mb-6 text-white"
         >
-          We really need these details. Don't go just yet
+          We really need these details. Don&apos;t go just yet
         </motion.div>
       )}
       <div className="">

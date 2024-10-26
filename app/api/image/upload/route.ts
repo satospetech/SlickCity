@@ -33,7 +33,7 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-async function uploadFileToS3(file: any, key: string, type: string) {
+async function uploadFileToS3(file:Buffer, key: string, type: string) {
   const regex = /[^a-zA-Z0-9\s]/g;
 
   const params = {
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       })
     );
 
-    let signedUrl = [];
+    const signedUrl = [];
     for (let i = 0; i < images.length; i++) {
       const buffer = Buffer.from(await images[i].file.arrayBuffer());
       const filekey = await uploadFileToS3(
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
       };
       signedUrl.push(s3.getSignedUrl("getObject", input));
       const command = new GetObjectCommand(input);
-      const result = await s3Client.send(command);
+ await s3Client.send(command);
       console.log("final:", signedUrl);
     }
     const upload = {

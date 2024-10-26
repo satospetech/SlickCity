@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from "react";
+import React, { ChangeEvent,useState } from "react";
 import { motion } from "framer-motion";
 
 const Form1 = ({
