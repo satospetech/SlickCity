@@ -11,7 +11,7 @@ interface Obj {
   [key: string]: string;
 }
 
-export const formats: Obj = {
+const formats: Obj = {
   jpg: "jpg",
   jpeg: "jpeg",
   png: "png",
