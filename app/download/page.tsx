@@ -6,6 +6,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MailIcon, PhoneIcon } from "lucide-react";
 import { saveAs } from "file-saver";
 import { Loader } from "lucide-react";
+import { toast } from "react-toastify";
 
 interface Post {
   firstName: string;
@@ -71,7 +72,9 @@ const Page = () => {
       setSending(true);
       const res = await axios.post("/api/image/sendToUser", formData);
       console.log(res);
+      if (res.data.status===200) toast.success("Video has been sent to user");
     } catch (err) {
+      toast.error("Something went wrong");
       console.log(err);
     } finally {
       setSending(false);
@@ -86,12 +89,11 @@ const Page = () => {
       setVideos(files);
     }
   };
+
   return (
     <div className="bg-tertiary min-h-screen p-4 xl:p-6 font-roob text-white ">
       <div className="max-xl:max-w-3xl xl:w-8/12 mx-auto">
-        <h1 className="text-2xl  xl:text-4xl  mb-10 max-xl:mt-20">
-          File Downloads
-        </h1>
+        <h1 className="text-2xl  xl:text-4xl  mb-5 xl:mb-10 mt-12 xl:mt-20">File Downloads</h1>
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, index) => (
@@ -170,7 +172,7 @@ const Page = () => {
                         }}
                       >
                         {" "}
-                        {sending ? (
+                        {sending && detailsRef.current.id === post.images[0] ? (
                           <Loader className="animate-spin" />
                         ) : (
                           "Send Media"

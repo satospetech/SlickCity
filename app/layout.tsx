@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -35,9 +37,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roob.variable}  antialiased`}>
+        <ToastContainer />
         <header>
           {" "}
-          <h1 className={`text-3xl xl:text-4xl font-roob font-medium text-white bg-tertiary absolute px-4 xl:px-6 py-4`}>SlickCity</h1>
+          <h1
+            className={`text-3xl xl:text-4xl font-roob font-medium text-white bg-tertiary absolute px-4 xl:px-6 py-4`}
+          >
+            SlickCity.io
+          </h1>
         </header>
         {children}
       </body>
