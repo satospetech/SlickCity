@@ -5,6 +5,7 @@ import Form3 from "@/components/molecules/Forms/Form3";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -60,13 +61,18 @@ const Home = () => {
       });
       setLoading(true);
       try {
-        await axios.post("/api/image/upload", formData);
+        const result = await axios.post("/api/image/upload", formData);
+        console.log(result);
+        if (result.data.status === 201) {
+          setForm(4);
+
+          setImages([]);
+        }
       } catch (err) {
-        console.log(err)
+        toast.error("Something went wrong. Please try again");
+        console.log(err);
       } finally {
         setLoading(false);
-        setForm(4);
-        setImages([]);
       }
     }
   };
@@ -126,8 +132,8 @@ const Home = () => {
             transition={{ ease: "easeInOut", duration: 1 }}
             className="text-xl xl:text-3xl font-semibold text-center mb-4 xl:mb-6 text-white px-4 max-w-lg"
           >
-            We&apos;ll send you a video in a couple of minutes. You can send more
-            pictures and we&apos;ll make more videos
+            We&apos;ll send you a video in a couple of minutes. You can send
+            more pictures and we&apos;ll make more videos
           </motion.h1>
         </motion.div>
       )}
