@@ -6,6 +6,7 @@ import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { Imageupload } from "./actions/image_upload";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -33,7 +34,8 @@ const Home = () => {
     if (e.target && e.target.files) {
       const files: { file: File; type: string }[] = [];
       for (let i = 0; i < e.target.files.length; i++) {
-        files.push({ file: e.target.files[i], type: e.target.files[i].type });
+        console.log(e.target.files[i].type)
+        files.push({ file: e.target.files[i], type: e.target.files[i].type});
       }
       setImages((prev) => [...prev, ...files]);
     }
@@ -61,11 +63,10 @@ const Home = () => {
       });
       setLoading(true);
       try {
-        const result = await axios.post("/api/image/upload", formData);
-        console.log(result);
-        if (result.data.status === 201) {
+        const req = await Imageupload(formData);
+        const result = await JSON.parse(req as string)
+        if (result.status === 201) {
           setForm(4);
-
           setImages([]);
         }
       } catch (err) {

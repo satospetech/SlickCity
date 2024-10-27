@@ -1,3 +1,5 @@
+"use server";
+
 import { response } from "@/lib/res";
 import ImageUpload from "@/schema/imageSchema/imageSchema";
 import {
@@ -17,6 +19,12 @@ const formats: Obj = {
   png: "png",
 };
 
+const config = {
+  api: {
+    responseLimit: false,
+  },
+};
+
 const s3Client = new S3Client({
   region: "eu-north-1",
   credentials: {
@@ -33,28 +41,27 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-async function uploadFileToS3(file:Buffer, key: string, type: string) {
+async function uploadFileToS3(file: Buffer, key: string, type: string) {
   const regex = /[^a-zA-Z0-9\s]/g;
 
   const params = {
     Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET,
-    Key: `${key}.${formats[type.split("/")[1].replace(regex, "")]}`,
+    Key: `${key}`,
     Body: file,
     ContentType: type,
   };
   const command = new PutObjectCommand(params);
   await s3Client.send(command);
-  return `${key}.${formats[type.split("/")[1].replace(regex, "")]}`;
+  return `${key}`;
 }
 
-export async function POST(req: Request) {
-  const formData = await req.formData();
-  const firstName = formData.get("firstName");
-  const lastName = formData.get("lastName");
+export const Imageupload = async (form: FormData) => {
+  const firstName = form.get("firstName");
+  const lastName = form.get("lastName");
   const baseKey = `${firstName}${lastName}${Date.now()}`;
   try {
-    const imageList = formData.getAll("image");
-    const types = formData.getAll("type");
+    const imageList = form.getAll("image");
+    const types = form.getAll("type");
     const images: { file: File; type: string }[] = imageList.map(
       (image, index) => ({
         file: image as File,
@@ -78,28 +85,28 @@ export async function POST(req: Request) {
       };
       signedUrl.push(s3.getSignedUrl("getObject", input));
       const command = new GetObjectCommand(input);
- await s3Client.send(command);
-      console.log("final:", signedUrl);
+      await s3Client.send(command);
     }
     const upload = {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      email: formData.get("email"),
-      phoneNumber: formData.get("phoneNumber"),
+      firstName: form.get("firstName"),
+      lastName: form.get("lastName"),
+      email: form.get("email"),
+      phoneNumber: form.get("phoneNumber"),
       images: signedUrl,
-      effect: formData.get("effect"),
+      effect: form.get("effect"),
     };
     const image = new ImageUpload(upload);
     const uploaded = await image.save();
-    return response(201, "Images have been uploaded successfully", {
-      answer: uploaded,
-      url: signedUrl,
+    return JSON.stringify({
+      status: 201,
+      message: "Images Uploaded Successfully",
+      data: { answer: uploaded, url: signedUrl },
     });
   } catch (err) {
     if (err instanceof Error) {
-      console.log("error", err.message);
-      return response(500, err.message);
+      //console.log("error", err.message);
+      return { status: 500, message: err.message };
     }
-    return response(500, "An unknown error occurred");
+    return { status: 500, message: "An unknown error occurred" };
   }
-}
+};
