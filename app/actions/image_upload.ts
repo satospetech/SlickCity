@@ -1,6 +1,5 @@
 "use server";
 
-import { response } from "@/lib/res";
 import ImageUpload from "@/schema/imageSchema/imageSchema";
 import {
   S3Client,
@@ -9,21 +8,7 @@ import {
 } from "@aws-sdk/client-s3";
 import AWS from "aws-sdk";
 
-interface Obj {
-  [key: string]: string;
-}
 
-const formats: Obj = {
-  jpg: "jpg",
-  jpeg: "jpeg",
-  png: "png",
-};
-
-const config = {
-  api: {
-    responseLimit: false,
-  },
-};
 
 const s3Client = new S3Client({
   region: "eu-north-1",
@@ -42,7 +27,6 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 async function uploadFileToS3(file: Buffer, key: string, type: string) {
-  const regex = /[^a-zA-Z0-9\s]/g;
 
   const params = {
     Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET,
