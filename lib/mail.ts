@@ -20,7 +20,7 @@ export const SendEmail = async (
 
   try {
     await transport.sendMail({
-      from: "johntagbo2@gmail.com",
+      from: "slickcityempire@gmail.com",
       to: email, //springcarehospitalltd@gmail.com
       subject: subject,
       html: body,
