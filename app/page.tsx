@@ -3,7 +3,6 @@ import Form1 from "@/components/molecules/Forms/Form1";
 import Form2 from "@/components/molecules/Forms/Form2";
 import Form3 from "@/components/molecules/Forms/Form3";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { Imageupload } from "./actions/image_upload";
