@@ -62,17 +62,39 @@ const Page = () => {
   };
 
   const sendMail = async (email: string, name: string) => {
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("name", name);
-    videos.forEach((vid) => {
-      formData.append(`file`, vid);
-    });
+    setSending(true);
+    const chunkSize = 2 * 1024 * 1024; // 1 MB per chunk
+    const totalChunks = Math.ceil(videos[0].size / chunkSize);
+    for (let i = 0; i < totalChunks; i++) {
+      const start = i * chunkSize;
+      const end = start + chunkSize;
+      const chunk = videos[0].slice(start, end);
+
+      // Use FormData to send each chunk with metadata
+      const formData = new FormData();
+      formData.append("file", chunk);
+      formData.append("fileName", videos[0].name);
+      formData.append("chunkIndex", i.toString());
+      formData.append("totalChunks", totalChunks.toString());
+      try {
+        const req = await fetch("/api/image/chunking", {
+          method: "POST",
+          body: formData,
+        });
+        const res = await req.json();
+        console.log(res);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     try {
-      setSending(true);
-      const res = await axios.post("/api/image/sendToUser", formData);
-      console.log(res);
-      if (res.data.status===200) toast.success("Video has been sent to user");
+      const res = await axios.post("/api/image/sendToUser", {
+        fileName: videos[0].name,
+        email,
+        name,
+      });
+      if (res.data.status === 200) toast.success("Video has been sent to user");
     } catch (err) {
       toast.error("Something went wrong");
       console.log(err);
@@ -80,6 +102,7 @@ const Page = () => {
       setSending(false);
     }
   };
+
   const imageSelect = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
       const files: File[] = [];
@@ -93,7 +116,9 @@ const Page = () => {
   return (
     <div className="bg-tertiary min-h-screen p-4 xl:p-6 font-roob text-white ">
       <div className="max-xl:max-w-3xl xl:w-8/12 mx-auto">
-        <h1 className="text-2xl  xl:text-4xl  mb-5 xl:mb-10 mt-12 xl:mt-20">File Downloads</h1>
+        <h1 className="text-2xl  xl:text-4xl  mb-5 xl:mb-10 mt-12 xl:mt-20">
+          File Downloads
+        </h1>
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, index) => (
@@ -202,8 +227,8 @@ const Page = () => {
                 <input
                   name="images"
                   onChange={imageSelect}
-                  multiple
                   type="file"
+                  accept=".mp4"
                   className="max-w-[300px]"
                 />
               </label>
