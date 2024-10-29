@@ -46,6 +46,7 @@ const Page = () => {
       setDownloading(true);
       const zip = new JSZip();
       const remoteZips = urls.map(async (file: string) => {
+        
         const response = await fetch(file);
         const data = await response.blob();
         zip.file(`${file.split("/")[5].split("?")[0]}`, data);
