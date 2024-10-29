@@ -6,7 +6,7 @@ export const SendEmail = async (
   body: string,
   subject: string,
   email: string,
-  attachments?: { fileName: string; content: Buffer, contentType:string }[]
+  attachments?: { fileName: string; path:string }[]
 ) => {
   const { SMTP_EMAIL, SMTP_PASSWORD } = process.env;
   const transport = nodemailer.createTransport({
