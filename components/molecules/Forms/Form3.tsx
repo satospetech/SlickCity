@@ -41,6 +41,16 @@ const Form3 = ({
     "Crush it",
     "Cake-ify It",
     "Explode it",
+    "90s Me",
+    "Baby Me",
+    "Poke it",
+    "Princess Me",
+    "Hero Me",
+    "Looong Hair",
+    "Bald Me",
+    "Levitate it",
+    "Tear it",
+    "Pink Hair"
   ];
 
   const clickHandler = () => {
